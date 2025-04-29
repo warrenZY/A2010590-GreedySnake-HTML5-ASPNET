@@ -1,0 +1,14 @@
+﻿/* File: twoplayer.css */
+
+/* Two player container uses default column layout from common.css */
+/* #two-player-container { flex-direction: column; align-items: center; } */
+
+/* No specific layout overrides needed here beyond common.css,
+   as two-player is a simple centered column.
+   Styles for score-area, canvas, controls, instructions are in common.css
+*/
+
+/* Responsive adjustments */
+@media (max-width: 860px) {
+    /* Two player layout is already column on small screens due to common.css */
+}

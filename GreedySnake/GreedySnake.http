@@ -1,0 +1,6 @@
+@GreedySnake_HostAddress = http://localhost:5000
+
+GET {{GreedySnake_HostAddress}}/api/Leaderboard
+Accept: application/json
+
+###

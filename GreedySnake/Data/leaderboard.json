@@ -1,0 +1,40 @@
+{
+  "Entries": [
+    {
+      "Username": "\u65E5\u5BB66139",
+      "Score": 8,
+      "SurvivalTime": 36,
+      "Timestamp": "2025-04-28T12:34:59.264Z"
+    },
+    {
+      "Username": "\u73A9\u5BB66139",
+      "Score": 0,
+      "SurvivalTime": 1,
+      "Timestamp": "2025-04-28T12:40:34.549Z"
+    },
+    {
+      "Username": "\u73A9\u5BB66317",
+      "Score": 3,
+      "SurvivalTime": 15,
+      "Timestamp": "2025-04-28T13:24:35.806Z"
+    },
+    {
+      "Username": "\u90B1\u6761\u82B3\u82B3\u82B3\u82B3\u82B3\u82B3\u82B3\u82B3\u82B3",
+      "Score": 9999999,
+      "SurvivalTime": 0,
+      "Timestamp": "2025-04-28T13:01:50.117Z"
+    },
+    {
+      "Username": "\u73A9\u5BB69907",
+      "Score": 2,
+      "SurvivalTime": 5,
+      "Timestamp": "2025-04-29T11:26:49.633Z"
+    },
+    {
+      "Username": "\u73A9\u5BB66781",
+      "Score": 3,
+      "SurvivalTime": 17,
+      "Timestamp": "2025-04-29T13:41:05.718Z"
+    }
+  ]
+}

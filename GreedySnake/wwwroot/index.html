@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择游戏模式 - 贪吃蛇</title>
+    <link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+    <div id="mode-select-container">
+        <h1>贪吃蛇游戏</h1>
+
+        <div id="username-setup">
+            <label for="username-input">你的用户名:</label>
+            <input type="text" id="username-input" maxlength="20">
+            <button id="save-username-button">保存</button>
+            <p>当前用户名: <span id="current-username-display">玩家</span></p>
+        </div>
+
+        <div id="mode-options">
+            <span>选择模式:</span>
+            <div>
+                <input type="radio" id="mode-single" name="game-mode" value="singleplayer" checked>
+                <label for="mode-single">单人游戏</label>
+            </div>
+            <div>
+                <input type="radio" id="mode-two" name="game-mode" value="twoplayer">
+                <label for="mode-two">双人对战</label>
+            </div>
+        </div>
+
+        <button id="enter-game-button">进入游戏</button>
+
+        <p id="mode-message-area"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const usernameInput = document.getElementById('username-input');
+            const saveUsernameButton = document.getElementById('save-username-button');
+            const currentUsernameDisplay = document.getElementById('current-username-display');
+            const enterButton = document.getElementById('enter-game-button');
+            const modeOptions = document.querySelectorAll('input[name="game-mode"]');
+            const messageArea = document.getElementById('mode-message-area');
+
+            const USERNAME_STORAGE_KEY = 'snakeGameUsername';
+            let currentUsername = '玩家' + Math.floor(Math.random() * 10000); // Default random
+
+            // Load username on page load
+            function loadUsername() {
+                const savedUsername = localStorage.getItem(USERNAME_STORAGE_KEY);
+                if (savedUsername) {
+                    currentUsername = savedUsername;
+                } else {
+                    saveUsername(currentUsername); // Save the initial random one if none exists
+                }
+                usernameInput.value = currentUsername;
+                currentUsernameDisplay.textContent = currentUsername;
+            }
+
+            // Save username
+            function saveUsername(usernameToSave = usernameInput.value.trim()) {
+                if (usernameToSave) {
+                    currentUsername = usernameToSave;
+                    localStorage.setItem(USERNAME_STORAGE_KEY, currentUsername);
+                    currentUsernameDisplay.textContent = currentUsername;
+                    console.log("Username saved:", currentUsername);
+                    messageArea.textContent = '用户名已保存!';
+                    setTimeout(() => messageArea.textContent = '', 3000);
+                } else {
+                    alert("用户名不能为空！");
+                    usernameInput.value = currentUsername; // Revert
+                }
+            }
+
+            // Event listeners
+            saveUsernameButton.addEventListener('click', () => saveUsername());
+            usernameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveUsername();
+                }
+            });
+
+
+            enterButton.addEventListener('click', () => {
+                let selectedMode = null;
+                for (const option of modeOptions) {
+                    if (option.checked) {
+                        selectedMode = option.value;
+                        break;
+                    }
+                }
+
+                if (selectedMode) {
+                    saveUsername(); // Ensure the latest username is saved/used before navigating
+
+                    messageArea.textContent = '';
+                    let targetUrl = '/' + selectedMode + '.html';
+                    if (selectedMode === 'singleplayer') {
+                        // Pass username as a URL parameter
+                        targetUrl += '?username=' + encodeURIComponent(currentUsername);
+                    }
+                    window.location.href = targetUrl;
+                } else {
+                    messageArea.textContent = '请选择一个游戏模式！';
+                }
+            });
+
+            loadUsername();
+        });
+    </script>
+</body>
+</html>
