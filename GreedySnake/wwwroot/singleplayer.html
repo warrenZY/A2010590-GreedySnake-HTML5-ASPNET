@@ -25,16 +25,25 @@
             </div>
 
             <div id="instructions">
-                <p>按 **空格键** 开始游戏。</p>
-                <p>操作：使用方向键 (↑ ↓ ← →) 或 WASD 控制蛇移动。</p>
+                <p>按 **空格键** 开始游戏。</p> <p>操作：使用方向键 (↑ ↓ ← →) 或 WASD 控制蛇移动。</p>
                 <p>规则：吃到食物得分并变长，撞到墙壁或自己身体则游戏结束。</p>
-                <p>难度影响游戏速度。</p>
+                <p>难度影响游戏速度及每分的速度提升。</p>
                 <p><a href="/">返回模式选择</a></p>
             </div>
         </div>
 
         <div id="leaderboard-area">
-            <h2>排行榜</h2> <ul id="leaderboard-list">
+            <h2>排行榜</h2> <div id="leaderboard-filter">
+                筛选难度:
+                <select id="difficulty-filter">
+                    <option value="all">全部</option>
+                    <option value="current">相同难度</option>
+                    <option value="easy">简单</option>
+                    <option value="medium">中等</option>
+                    <option value="hard">困难</option>
+                </select>
+            </div>
+            <ul id="leaderboard-list">
             </ul>
         </div>
     </div>

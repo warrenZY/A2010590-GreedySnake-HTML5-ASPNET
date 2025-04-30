@@ -243,30 +243,6 @@ h1 {
         }
 
 
-/* --- Common Leaderboard List Container Reset --- */
-/* Base reset for the ul element of the leaderboard list */
-#leaderboard-list {
-    list-style: none; /* Remove default list bullets */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-}
-
-    /* Styling for individual leaderboard list items */
-    #leaderboard-list li {
-        margin-bottom: 8px; /* Space below each list item */
-        padding-bottom: 5px; /* Padding below content within the item */
-        border-bottom: 1px dashed #eee; /* Dashed separator below each item */
-        font-size: 0.95em; /* Slightly smaller font size */
-        color: #333; /* Dark text color */
-        word-break: break-word; /* Allow long words to break and wrap */
-        text-align: left; /* Align text left within the list item */
-    }
-
-        /* Remove bottom border for the last list item */
-        #leaderboard-list li:last-child {
-            border-bottom: none;
-        }
-
 
 /* --- Common Styles for Mode Options Sections (Single and Two Player) --- */
 /* These sections contain mode-specific settings like difficulty */

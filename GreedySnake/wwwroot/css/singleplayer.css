@@ -75,16 +75,10 @@
 }
 
 /* --- Leaderboard Specific Styles (#leaderboard-area and its content) --- */
-/* Base styles for #leaderboard-list h2, #leaderboard-list, #leaderboard-list li are in common.css */
 
 /* Default text alignment for the leaderboard area content */
 #leaderboard-area {
     text-align: left; /* Align text content left within the leaderboard area */
-}
-
-/* Styles for individual leaderboard list items (li) */
-#leaderboard-list li {
-    /* Styles defined in common.css (margin, padding, border, text-align etc.) */
 }
 
 /* --- Styles for the 2-line leaderboard entry structure --- */
@@ -120,23 +114,49 @@
     }
 
 
-/* --- Leaderboard Entry Layout Overrides for Small Screens (Revert Flexbox) --- */
-@media (max-width: 860px) {
-    /* On small screens, revert the score/time line container to a block */
-    .leaderboard-entry-score-time {
-        display: block;
-        /* Flexbox properties are implicitly removed when display is changed from flex */
+
+/* --- Leaderboard List Container --- */
+#leaderboard-list {
+    list-style: none; /* Remove default list bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+    /* Styling for individual leaderboard list items */
+    #leaderboard-list li {
+        margin-bottom: 8px; /* Space below each list item */
+        padding-bottom: 5px; /* Padding below content within the item */
+        border-bottom: 1px dashed #eee; /* Dashed separator below each item */
+        font-size: 0.95em; /* Slightly smaller font size */
+        color: #333; /* Dark text color */
+        word-break: break-word; /* Allow long words to break and wrap */
+        text-align: left; /* Align text left within the list item */
     }
 
-        /* Styles for spans within the score-time div on small screens */
-        /* These make the score and time flow inline like regular text */
-        .leaderboard-entry-score-time .score,
-        .leaderboard-entry-score-time .time {
-            display: inline; /* Ensure these spans flow inline */
-            margin-right: 5px; /* Add a small space between score and time when inline */
+        /* Remove bottom border for the last list item */
+        #leaderboard-list li:last-child {
+            border-bottom: none;
         }
 
-        .leaderboard-entry-score-time .time {
-            margin-right: 0; /* Remove the margin after the last item */
-        }
+
+/* --- Leaderboard Filter Styles --- */
+#leaderboard-filter {
+    margin-bottom: 10px; /* Space below the filter dropdown */
+    text-align: left; /* Align filter label and select to the left */
+    padding-bottom: 5px; /* Optional: Add padding below filter */
+    border-bottom: 1px dashed #eee; /* Optional: Separator line below filter */
+    font-size: 0.95em; /* Match list item font size */
+    color: #555; /* Match label color */
 }
+
+    #leaderboard-filter select {
+        padding: 3px; /* Padding inside the select */
+        border-radius: 4px; /* Rounded corners */
+        border: 1px solid #ccc; /* Default border style */
+        font-size: 0.95em; /* Match filter label font size */
+        cursor: pointer; /* Indicate interactive element */
+        vertical-align: middle; /* Align select with text baseline */
+        margin-left: 5px; /* Space between label and select */
+        background-color: #fff; /* White background for select */
+        color: #333; /* Default text color */
+    }

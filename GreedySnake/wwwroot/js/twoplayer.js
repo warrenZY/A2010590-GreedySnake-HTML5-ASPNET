@@ -4,6 +4,8 @@
  * Handles movement for two snakes, food generation, collision detection
  * (wall, self, player-to-player), score, game state (start/game over), time tracking,
  * and keyboard input specific to two players (WASD and Arrows).
+ * Includes dynamic speed adjustment based on combined player scores using a common helper function
+ * with difficulty-specific step rates. Does NOT submit scores to the leaderboard.
  * Relies on common.js for helper functions and constants.
  */
 
@@ -25,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let players = []; // Array containing player objects (Player 1 and Player 2)
     let food; // Object representing the food position ({x, y})
     let speed = 120; // Game speed in milliseconds (interval between game ticks, lower value means faster)
+    let initialTwoPlayerSpeed = 120; // Stores the speed set by the initial difficulty, used as a baseline for dynamic speed adjustment
+    let twoPlayerScoreStepReduction = 5; // Amount speed decreases per point for the current difficulty
     let gameLoopTimeout; // Stores the ID returned by setTimeout for the game loop
     let isGameRunning = false; // Flag indicating if the game is currently running
     let gameStartTime = null; // Timestamp (milliseconds) when the current match started (for survival time calculation)
@@ -38,13 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Two player game initializing...");
 
         // Read difficulty from URL parameters
-        // --- FIX: Default difficulty for two player is 'easy' ---
         const urlParams = new URLSearchParams(window.location.search);
         gameDifficulty = urlParams.get('difficulty') || 'easy'; // Get 'difficulty' param or default to 'easy'
-        // --- End FIX ---
 
-        // Set game speed based on the selected difficulty level
+        // Set the initial game speed and score step reduction rate based on the selected difficulty level
         setGameSpeed(gameDifficulty);
+        initialTwoPlayerSpeed = speed; // Store the speed set by the initial difficulty
 
         // Initialize player states for both players to starting values
         players = []; // Clear the existing players array
@@ -65,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             score: 0, // Initial score
             direction: 'left', // Initial direction
             nextDirection: 'left', // Next direction
-            alive: true, // Player starts alive
+            alive: true, // Alive state
             color: '#FF0000', // Red color
             name: '玩家二', // Player name
             startTime: null,
@@ -95,27 +98,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Perform initial drawing of the game board (empty) and the snakes
         draw();
 
-        console.log(`Two player game initialized. Difficulty: ${gameDifficulty}, Speed: ${speed}ms`); // Log initialization details
+        console.log(`Two player game initialized. Difficulty: ${gameDifficulty}, Initial Speed: ${initialTwoPlayerSpeed}ms, Speed Step: ${twoPlayerScoreStepReduction}ms/point`); // Log initialization details
     }
 
     // --- Game Speed Configuration ---
-    // Sets the global 'speed' variable based on the selected difficulty level for two player.
-    // A lower 'speed' value results in a faster game loop and thus faster snake movement.
+    // Sets the initial global 'speed' variable and the score step reduction rate
+    // based on the selected two-player difficulty level.
+    // This function is typically called only once during initialization and at the start of a new game.
+    // Dynamic speed changes based on combined player scores happen in the update function using the determined step rate.
     // difficulty: string - The difficulty level ('super_easy', 'easy', 'medium', 'hard').
     function setGameSpeed(difficulty) {
         switch (difficulty) {
             case 'super_easy':
-                speed = 200; // Slowest speed (longest interval)
+                speed = 200; // Slowest initial speed (longest interval)
+                twoPlayerScoreStepReduction = 2; // Very small speed increase per point
                 break;
             case 'easy':
-                speed = 150; // Slower speed
+                speed = 150; // Slower initial speed
+                twoPlayerScoreStepReduction = 3; // Small speed increase per point
                 break;
             case 'hard':
-                speed = 50; // Fastest speed (shortest interval)
+                speed = 50; // Fastest initial speed
+                twoPlayerScoreStepReduction = 7; // Large speed increase per point
                 break;
             case 'medium':
             default:
-                speed = 100; // Default (medium) speed
+                speed = 100; // Default (medium) initial speed
+                twoPlayerScoreStepReduction = 5; // Medium speed increase per point
                 break;
         }
     }
@@ -128,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let newFoodPosition;
         let isCollidingWithAnySnake;
         do {
-            // Generate random integer grid coordinates for the food position
+            // Generate random integer grid coordinates within bounds
             newFoodPosition = {
                 x: Math.floor(Math.random() * GRID_WIDTH), // Random x-coordinate
                 y: Math.floor(Math.random() * GRID_HEIGHT) // Random y-coordinate
@@ -159,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Schedule the next execution of the gameLoop function after a delay equal to the 'speed'.
+        // The 'speed' variable is dynamically updated in the 'update' function based on combined scores.
         gameLoopTimeout = setTimeout(() => {
             update(); // Call the function to update the game state (move snakes, check collisions, etc.)
             draw(); // Call the function to redraw the canvas with the updated state
@@ -173,12 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameOver(); // End the game.
             }
 
-        }, speed); // The delay for the setTimeout is set by the global 'speed' variable (controlled by difficulty).
+        }, speed); // The delay for the setTimeout is set by the global 'speed' variable (controlled by difficulty and total score).
     }
 
     // --- Game State Update ---
     // Updates the position of both snakes, checks for all types of collisions (wall, self, player-to-player),
     // and food consumption. Determines which players die during this tick.
+    // Dynamically adjusts game speed based on the combined score of all players using a common helper function
+    // and the difficulty-specific step rate.
     function update() {
         // Calculate potential next head positions for all players (including those who might be dying)
         const nextPositions = players.map(player => {
@@ -188,9 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const direction = player.nextDirection; // Get player's next intended direction
             switch (direction) {
                 case 'up': nextHead.y -= 1; break; // Move one grid cell up
-                case 'down': nextHead.y += 1; break; // Move one grid cell down
-                case 'left': nextHead.x -= 1; break; // Move one grid cell left
-                case 'right': nextHead.x += 1; break; // Move one grid cell right
+                case 'down': nextHead.y += 1; break; // Move one grid cell down (increase y-coordinate).
+                case 'left': nextHead.x -= 1; break; // Move one grid cell left (decrease x-coordinate).
+                case 'right': nextHead.x += 1; break; // Move one grid cell right (increase x-coordinate).
             }
             return nextHead; // Return the calculated potential next head position
         });
@@ -243,9 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 3b. Current Player's Head vs Other Player's Body (including their head)
                 // Check if the current player's potential next head collides with ANY segment
-                // of the other player's *current* snake (head + body).
-                // Note: This check WILL be true in the head-to-head case (handled above),
-                // and also for head-to-body collision.
+                // of the other player's *current* snake body (including their current head).
                 if (!playersDyingThisFrame[pIndex] && isPositionOnSnake(nextHead, otherPlayer.snake.slice(0))) { // Use common helper function, slice(0) includes the head
                     playersDyingThisFrame[pIndex] = true; // Mark the current player as dying
                     console.log(`${player.name}'s head collided with ${otherPlayer.name}'s snake segment.`); // Log the collision
@@ -253,10 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 3c. Other Player's Head vs Current Player's Body (including head)
                 // This specific check is handled implicitly when the outer loop iterates for the 'otherPlayer'
-                // as the 'player'. For example, when P1 checks against P2, the P1 head vs P2 body check happens.
-                // When P2 checks against P1, the P2 head vs P1 body check happens.
-                // The head-to-head case is handled by checking if their *next* heads are the same.
-                // This ensures all player-to-player collision scenarios result in the correct player(s) dying.
+                // as the 'player'.
             });
         });
         // --- End Collision Detection Phase ---
@@ -297,9 +304,16 @@ document.addEventListener('DOMContentLoaded', () => {
             player.snake.unshift(nextHead);
         });
 
-        // If any food was eaten this frame by any player, generate a new food item
+        // If any food was eaten this frame by any player, generate a new food item and adjust speed
         if (foodEatenThisFrame) {
             generateFood(); // Use the two-player specific generateFood function
+
+            // --- Adjust speed based on total score using common helper function and difficulty-specific step ---
+            const totalScore = players.reduce((sum, p) => sum + p.score, 0); // Calculate the sum of scores for all players
+            // Calculate the new speed based on the initial speed, total score, and the mode's reduction rate per point.
+            speed = calculateDynamicSpeed(initialTwoPlayerSpeed, totalScore, twoPlayerScoreStepReduction);
+            console.log(`Total score increased to ${totalScore}, new speed: ${speed}ms`); // Log the total score and new speed
+            // --- End speed adjustment ---
         }
 
         // Update the score displays in the UI for both players
@@ -362,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
             direction: 'right', // Reset direction
             nextDirection: 'right', // Reset next direction
             alive: true, // Player starts alive
-            color: '#0000FF', // Snake color
+            color: '#0000FF', // Blue color
             name: '玩家一', // Player name
             startTime: null, // Reset start time
             survivalTime: 0, // Reset survival time
@@ -374,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
             direction: 'left', // Reset direction
             nextDirection: 'left', // Reset next direction
             alive: true, // Player starts alive
-            color: '#FF0000', // Snake color
+            color: '#FF0000', // Red color
             name: '玩家二', // Player name
             startTime: null,
             survivalTime: 0,
@@ -392,10 +406,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         generateFood(); // Generate the first food item for the new game
 
+        // Reset speed to the initial difficulty speed and set the step rate at the start of a new game
+        setGameSpeed(gameDifficulty);
+        initialTwoPlayerSpeed = speed; // Ensure initial speed is correctly stored for the new game
+
         gameLoop(); // Start the main game loop execution
     }
 
     // Ends the current two player game. Determines winner and displays results.
+    // Does NOT submit scores to the leaderboard as per requirements.
     function gameOver() {
         // Exit the function if the game is not running (e.g., already game over).
         if (!isGameRunning) return;
@@ -439,15 +458,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (p1) resultText += `<p><strong>${escapeHTML(p1.name)}</strong> (${p1.color === '#0000FF' ? '蓝色' : '红色'}): 得分 ${p1.score}, 游戏时长 ${p1.survivalTime}s ${p1.alive ? '(幸存)' : '(死亡)'}</p>`;
         if (p2) resultText += `<p><strong>${escapeHTML(p2.name)}</strong> (${p2.color === '#FF0000' ? '红色' : '蓝色'}): 得分 ${p2.score}, 游戏时长 ${p2.survivalTime}s ${p2.alive ? '(幸存)' : '(死亡)'}</p>`;
 
-        // Determine the winner based on game outcomes (usually last player alive wins).
-        // If both die simultaneously (e.g., head-to-head, or both hit walls same tick), determine based on score, then survival time.
+        // Determine and display the winner based on game outcomes (last player alive, then score, then time).
         if (p1 && p2) {
             if (p1.alive && !p2.alive) {
                 resultText += `<p><strong>${escapeHTML(p1.name)}</strong> 获胜!</p>`;
             } else if (!p1.alive && p2.alive) {
                 resultText += `<p><strong>${escapeHTML(p2.name)}</strong> 获胜!</p>`;
             } else {
-                // Both players died (simultaneously or already dead before this tick)
+                // Both players died (simultaneously or already dead before this tick) or both survived (implies tie-game)
                 if (p1.score > p2.score) {
                     resultText += `<p><strong>${escapeHTML(p1.name)}</strong> 获胜 (得分更高)!</p>`;
                 } else if (p2.score > p1.score) {
@@ -459,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (p2.survivalTime > p1.survivalTime) {
                         resultText += `<p><strong>${escapeHTML(p2.name)}</strong> 获胜 (游戏时长更长)!</p>`;
                     } else {
+                        // Exact tie, no winner determined by score/time
                         resultText += `<p>平局!</p>`; // Both scores and times are tied
                     }
                 }
@@ -467,11 +486,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gameResultArea.innerHTML = resultText; // Display the results HTML in the results area
 
+        // --- Score Submission Removed ---
+        // As per requirements, two-player scores are not submitted to the leaderboard.
+        // The submitScore function and its call were removed.
+        // --- End Score Submission Removal ---
+
+
         draw(); // Perform a final draw to show snakes in grey to indicate game over state
 
         // Add a prompt message instructing the user how to start a new game.
         messageElement.textContent += ' 按空格键开始新游戏';
     }
+
+    // --- API Interaction (Leaderboard) ---
+    // The submitScore function and any calls to it have been removed from twoplayer.js
+    // as scores are not submitted from this mode.
 
     // --- Event Listeners ---
     // Add event listener to the start button to call startGame function when clicked.
@@ -486,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleKeyDownTwoPlayer(e) {
         // Start the game using the Spacebar if the game is not currently running.
         if (!isGameRunning && e.key === ' ') {
-            e.preventDefault(); // Prevent default browser action for Spacebar (like scrolling).
+            e.preventDefault(); // Prevent default browser action for Spacebar.
             startGame(); // Call the startGame function.
             return; // Exit the function after handling the Spacebar press.
         }
@@ -523,7 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Check if the requested direction is NOT the opposite of the player's current direction.
             if (player.direction !== oppositeDirections[requestedDirection]) {
                 player.nextDirection = requestedDirection; // Set the player's next intended direction.
-                e.preventDefault(); // Prevent default browser action for arrow keys or WASD (like scrolling).
+                e.preventDefault(); // Prevent default browser action for arrow keys or WASD.
             }
         }
     }

@@ -17,6 +17,14 @@ const GRID_WIDTH = CANVAS_WIDTH / GRID_SIZE;
 const GRID_HEIGHT = CANVAS_HEIGHT / GRID_SIZE;
 // API endpoint URL for the leaderboard
 const LEADERBOARD_API_URL = '/api/leaderboard';
+// Minimum speed (maximum difficulty) in milliseconds for the game loop interval.
+// The game speed will not go below this value regardless of score.
+const MINIMUM_SPEED = 40; // Example: 40ms per tick (25 frames per second at max speed)
+
+// Note: SCORE_PER_SPEED_REDUCTION is now handled per difficulty in mode-specific JS files,
+// but we can define a typical value or base value here if needed, or just remove it.
+// Let's remove the fixed constant here as the rate is now variable.
+// const SCORE_PER_SPEED_REDUCTION = 5;
 
 
 // --- Helper Functions ---
@@ -85,7 +93,7 @@ function darkenColor(hexColor, percent) {
     // Calculate the darkening factor based on the percentage.
     const factor = 1 - percent / 100;
 
-    // Apply the darkening factor to each color component and ensure the result is within 0-255.
+    // Apply darkening and ensure values are within 0-255
     r = Math.floor(Math.max(0, r * factor));
     g = Math.floor(Math.max(0, g * factor));
     b = Math.floor(Math.max(0, b * factor));
@@ -107,4 +115,21 @@ function escapeHTML(str) {
     div.appendChild(document.createTextNode(str));
     // Return the innerHTML of the temporary div, which now contains the escaped string.
     return div.innerHTML;
+}
+
+// --- Game Logic Helpers ---
+
+// Calculates the new dynamic game speed based on the initial difficulty speed, the current total score, and the score reduction rate per point.
+// The speed decreases by the reductionRate amount for each point scored, down to a minimum limit.
+// initialSpeed: number - The starting speed determined by the difficulty level (milliseconds).
+// totalScore: number - The current total score obtained by the player(s).
+// reductionRate: number - The amount in milliseconds to reduce the speed for each point. This rate varies per difficulty.
+// Returns: number - The calculated new speed in milliseconds, ensuring it's not less than MINIMUM_SPEED.
+function calculateDynamicSpeed(initialSpeed, totalScore, reductionRate) {
+    // Calculate the total speed reduction based on the score and the per-point reduction rate.
+    const scoreBasedReduction = totalScore * reductionRate;
+    // Calculate the potential new speed by subtracting the reduction from the initial speed.
+    const potentialNewSpeed = initialSpeed - scoreBasedReduction;
+    // Return the new speed, ensuring it's not less than the global MINIMUM_SPEED.
+    return Math.max(MINIMUM_SPEED, potentialNewSpeed);
 }
