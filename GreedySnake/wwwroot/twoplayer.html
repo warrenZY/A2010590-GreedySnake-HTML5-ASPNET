@@ -3,18 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>双人对战贪吃蛇</title>
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/twoplayer.css">
+    <title>基于HTML5的贪吃蛇小游戏 - 双人对战</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/twoplayer.css">
 </head>
 <body>
     <div id="two-player-container" class="game-layout-container">
-        <h1>双人对战贪吃蛇</h1>
-
-        <div id="score-area">
-            <span>P1 (蓝色) 得分: <span id="p1-current-score">0</span></span>
-            <span style="margin-left: 20px;">P2 (红色) 得分: <span id="p2-current-score">0</span></span>
-            <span style="margin-left: 20px;">游戏时长: <span id="current-survival-time">0</span>s</span>
+        <h1>基于HTML5的贪吃蛇小游戏</h1> <div id="score-area">
+            <span>P1 (蓝色) 得分: <span id="p1-current-score">0</span></span> <span style="margin-left: 20px;">P2 (红色) 得分: <span id="p2-current-score">0</span></span> <span style="margin-left: 20px;">游戏时长: <span id="current-survival-time">0</span>s</span>
         </div>
 
         <canvas id="game-canvas" width="600" height="400"></canvas>
@@ -28,11 +24,13 @@
         <div id="instructions">
             <p>操作：P1 (蓝色) 使用 WASD，P2 (红色) 使用 方向键 (↑ ↓ ← →)。</p>
             <p>规则：吃到食物得分并变长。撞到墙壁、自己身体或对方身体则死亡。任一玩家死亡游戏结束。</p>
-            <p>也可按 **空格键** 开始游戏。</p> <p><a href="/">返回模式选择</a></p>
+            <p>也可按 **空格键** 开始游戏。</p>
+            <p>难度影响游戏速度。</p>
+            <p><a href="/">返回模式选择</a></p>
         </div>
     </div>
 
-    <script src="js/common.js" defer></script>
-    <script src="js/twoplayer.js" defer></script>
+    <script src="/js/common.js" defer></script>
+    <script src="/js/twoplayer.js" defer></script>
 </body>
 </html>

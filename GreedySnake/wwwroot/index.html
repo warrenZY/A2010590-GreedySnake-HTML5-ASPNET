@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>选择游戏模式 - 贪吃蛇</title>
-    <link rel="stylesheet" href="css/common.css">
+    <title>基于HTML5的贪吃蛇小游戏</title>
+    <link rel="stylesheet" href="/css/common.css">
 </head>
 <body>
     <div id="mode-select-container">
-        <h1>贪吃蛇游戏</h1>
-
-        <div id="username-setup">
-            <label for="username-input">你的用户名:</label>
-            <input type="text" id="username-input" maxlength="20">
-            <button id="save-username-button">保存</button>
-            <p>当前用户名: <span id="current-username-display">玩家</span></p>
+        <h1>基于HTML5的贪吃蛇小游戏</h1> <div id="username-setup">
+            <label for="username-input">你的用户名:</label> <input type="text" id="username-input" maxlength="20"> <button id="save-username-button">保存</button> <p>当前用户名: <span id="current-username-display">玩家</span></p>
         </div>
 
         <div id="mode-options">
-            <span>选择模式:</span>
-            <div>
+            <span>选择模式:</span> <div>
                 <input type="radio" id="mode-single" name="game-mode" value="singleplayer" checked>
                 <label for="mode-single">单人游戏</label>
             </div>
@@ -29,85 +23,198 @@
             </div>
         </div>
 
+        <div id="single-player-options" class="game-mode-options-section">
+            <h3>单人模式设置</h3> <div class="difficulty-options" id="single-player-difficulty-select">
+                <span>选择难度:</span>
+            <label><input type="radio" name="difficulty" value="easy"> 简单</label>
+            <label><input type="radio" name="difficulty" value="medium"> 中等</label>
+            <label><input type="radio" name="difficulty" value="hard"> 困难</label>
+            </div>
+        </div>
+
+        <div id="two-player-options" class="game-mode-options-section" style="display: none;">
+            <h3>双人模式设置</h3> <div class="difficulty-options" id="two-player-difficulty-select">
+                <span>选择难度:</span>
+            <label><input type="radio" name="twoplayer-difficulty" value="super_easy"> 超简单</label>
+            <label><input type="radio" name="twoplayer-difficulty" value="easy"> 简单</label>
+            <label><input type="radio" name="twoplayer-difficulty" value="medium"> 中等</label>
+            <label><input type="radio" name="twoplayer-difficulty" value="hard"> 困难</label>
+            </div>
+        </div>
+
         <button id="enter-game-button">进入游戏</button>
 
         <p id="mode-message-area"></p>
     </div>
 
     <script>
+        // Execute script after the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
-            const usernameInput = document.getElementById('username-input');
-            const saveUsernameButton = document.getElementById('save-username-button');
-            const currentUsernameDisplay = document.getElementById('current-username-display');
-            const enterButton = document.getElementById('enter-game-button');
-            const modeOptions = document.querySelectorAll('input[name="game-mode"]');
-            const messageArea = document.getElementById('mode-message-area');
+            // --- Get UI Element References ---
+            const usernameInput = document.getElementById('username-input'); // Username input field element
+            const saveUsernameButton = document.getElementById('save-username-button'); // Button to save username
+            const currentUsernameDisplay = document.getElementById('current-username-display'); // Span element displaying current username
+            const enterButton = document.getElementById('enter-game-button'); // Button to enter the game
+            const modeOptions = document.querySelectorAll('input[name="game-mode"]'); // NodeList of all game mode radio buttons
+            const messageArea = document.getElementById('mode-message-area'); // Paragraph element for displaying messages
 
-            const USERNAME_STORAGE_KEY = 'snakeGameUsername';
-            let currentUsername = '玩家' + Math.floor(Math.random() * 10000); // Default random
+            // Get references to the specific mode options sections and their nested difficulty radio buttons
+            const singlePlayerOptionsDiv = document.getElementById('single-player-options');
+            const twoPlayerOptionsDiv = document.getElementById('two-player-options');
+            // --- Get references by distinct names ---
+            const singlePlayerDifficultyOptions = document.querySelectorAll('#single-player-difficulty-select input[name="difficulty"]');
+            const twoPlayerDifficultyOptions = document.querySelectorAll('#two-player-difficulty-select input[name="twoplayer-difficulty"]');
 
-            // Load username on page load
+
+            // --- Username Storage ---
+            const USERNAME_STORAGE_KEY = 'snakeGameUsername'; // Key used for storing/retrieving username in local storage
+            let currentUsername = '玩家' + Math.floor(Math.random() * 10000); // Default username with a random number
+
+            // Loads the username from local storage if available, otherwise saves a default username.
             function loadUsername() {
-                const savedUsername = localStorage.getItem(USERNAME_STORAGE_KEY);
+                const savedUsername = localStorage.getItem(USERNAME_STORAGE_KEY); // Attempt to get username from local storage
                 if (savedUsername) {
-                    currentUsername = savedUsername;
+                    currentUsername = savedUsername; // Use saved username if found
                 } else {
-                    saveUsername(currentUsername); // Save the initial random one if none exists
+                    saveUsername(currentUsername); // Save the default username if no saved one exists
                 }
-                usernameInput.value = currentUsername;
-                currentUsernameDisplay.textContent = currentUsername;
+                usernameInput.value = currentUsername; // Set the value of the username input field
+                currentUsernameDisplay.textContent = currentUsername; // Update the displayed current username in the UI
             }
 
-            // Save username
+            // Saves the current username to local storage.
+            // usernameToSave: string (optional) - The username string to save. Defaults to the value of the username input field.
             function saveUsername(usernameToSave = usernameInput.value.trim()) {
+                // Check if the trimmed username is not empty before saving
                 if (usernameToSave) {
-                    currentUsername = usernameToSave;
-                    localStorage.setItem(USERNAME_STORAGE_KEY, currentUsername);
-                    currentUsernameDisplay.textContent = currentUsername;
-                    console.log("Username saved:", currentUsername);
-                    messageArea.textContent = '用户名已保存!';
-                    setTimeout(() => messageArea.textContent = '', 3000);
+                    currentUsername = usernameToSave; // Update the current username variable
+                    localStorage.setItem(USERNAME_STORAGE_KEY, currentUsername); // Save the username to local storage
+                    currentUsernameDisplay.textContent = currentUsername; // Update the displayed current username in the UI
+                    console.log("Username saved:", currentUsername); // Log for debugging
+                    messageArea.textContent = '用户名已保存!'; // Display a confirmation message to the user
+                    setTimeout(() => messageArea.textContent = '', 3000); // Clear the message after 3 seconds
                 } else {
-                    alert("用户名不能为空！");
-                    usernameInput.value = currentUsername; // Revert
+                    alert("用户名不能为空！"); // Alert the user if the username input is empty
+                    usernameInput.value = currentUsername; // Revert the input field value to the last valid username
                 }
             }
 
-            // Event listeners
+            // --- Mode Options Display ---
+            // Updates the visibility of single player and two player specific options sections
+            // based on which game mode radio button is currently selected.
+            function updateOptionsDisplay() {
+                let selectedMode = null;
+                // Iterate through all mode radio buttons to find the one that is checked
+                for (const option of modeOptions) {
+                    if (option.checked) {
+                        selectedMode = option.value; // Get the value ('singleplayer' or 'twoplayer')
+                        break; // Exit the loop once the checked option is found
+                    }
+                }
+
+                if (selectedMode === 'singleplayer') {
+                    singlePlayerOptionsDiv.style.display = 'block'; // Show single player options
+                    twoPlayerOptionsDiv.style.display = 'none'; // Hide two player options
+                    // Ensure the default single player difficulty ('medium') is checked when this section is shown
+                    for (const option of singlePlayerDifficultyOptions) {
+                        if (option.value === 'medium') { // Check if this is the medium option
+                            option.checked = true; // Set this radio button as checked
+                        } else {
+                            option.checked = false; // Ensure other single player difficulty options are unchecked
+                        }
+                    }
+                } else if (selectedMode === 'twoplayer') {
+                    singlePlayerOptionsDiv.style.display = 'none'; // Hide single player options
+                    twoPlayerOptionsDiv.style.display = 'block'; // Show two player options
+                    // Ensure the default two player difficulty ('super_easy') is checked when this section is shown
+                    // --- Use twoPlayerDifficultyOptions NodeList ---
+                    for (const option of twoPlayerDifficultyOptions) {
+                        if (option.value === 'easy') { // Check if this is the super_easy option
+                            option.checked = true; // Set this radio button as checked
+                        } else {
+                            option.checked = false; // Ensure other two player difficulty options are unchecked
+                        }
+                    }
+                }
+            }
+
+            // --- Event Listeners ---
+            // Add an event listener to the save username button to call saveUsername function when clicked.
             saveUsernameButton.addEventListener('click', () => saveUsername());
+            // Add an event listener to the username input field for key press events.
+            // If the Enter key is pressed, prevent the default action and call saveUsername.
             usernameInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    e.preventDefault();
-                    saveUsername();
+                    e.preventDefault(); // Prevent default form submission or other Enter key actions
+                    saveUsername(); // Save the username
                 }
             });
 
+            // Add event listeners to each game mode radio button.
+            // When a radio button's checked state changes, call updateOptionsDisplay.
+            modeOptions.forEach(option => {
+                option.addEventListener('change', updateOptionsDisplay);
+            });
 
+            // Event listener for the "Enter Game" button to handle game initiation.
             enterButton.addEventListener('click', () => {
                 let selectedMode = null;
+                // Find the currently selected game mode radio button
                 for (const option of modeOptions) {
                     if (option.checked) {
-                        selectedMode = option.value;
-                        break;
+                        selectedMode = option.value; // Get the value ('singleplayer' or 'twoplayer')
+                        break; // Exit the loop once found
                     }
                 }
 
+                // Proceed with game initiation only if a mode is selected
                 if (selectedMode) {
-                    saveUsername(); // Ensure the latest username is saved/used before navigating
+                    saveUsername(); // Save the username before navigating to the game page
 
-                    messageArea.textContent = '';
-                    let targetUrl = '/' + selectedMode + '.html';
+                    messageArea.textContent = ''; // Clear any previous messages
+                    let targetUrl = '/' + selectedMode + '.html'; // Determine the base URL of the target game page
+
+                    let selectedDifficulty = 'medium'; // Default difficulty value (used as a fallback if somehow no option is checked)
+
+                    // Get the selected difficulty value based on the chosen mode
                     if (selectedMode === 'singleplayer') {
-                        // Pass username as a URL parameter
-                        targetUrl += '?username=' + encodeURIComponent(currentUsername);
+                        // Find the checked difficulty radio button within the single player options div
+                        for (const option of singlePlayerDifficultyOptions) {
+                            if (option.checked) {
+                                selectedDifficulty = option.value;
+                                break; // Exit loop once checked option is found
+                            }
+                        }
+                    } else if (selectedMode === 'twoplayer') {
+                        // --- Use twoPlayerDifficultyOptions NodeList ---
+                        // Find the checked difficulty radio button within the two player options div
+                        for (const option of twoPlayerDifficultyOptions) {
+                            if (option.checked) {
+                                selectedDifficulty = option.value;
+                                break; // Exit loop once checked option is found
+                            }
+                        }
                     }
+
+                    // Construct the target URL with parameters
+                    // Pass difficulty as the first URL parameter using '?'
+                    targetUrl += '?difficulty=' + encodeURIComponent(selectedDifficulty);
+                    // If in single player mode, also pass the username parameter using '&'
+                    if (selectedMode === 'singleplayer') {
+                        targetUrl += '&username=' + encodeURIComponent(currentUsername);
+                    }
+
+                    // Navigate the browser window to the constructed target URL
                     window.location.href = targetUrl;
                 } else {
+                    // Display an error message if no game mode was selected
                     messageArea.textContent = '请选择一个游戏模式！';
                 }
             });
 
-            loadUsername();
+            // --- Initial Setup on Page Load ---
+            loadUsername(); // Load the username from local storage when the page finishes loading
+            updateOptionsDisplay(); // Set the initial visibility and ensure default difficulty is checked
         });
     </script>
 </body>

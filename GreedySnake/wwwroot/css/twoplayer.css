@@ -1,14 +1,20 @@
-﻿/* File: twoplayer.css */
+﻿/*
+ * File: twoplayer.css
+ * Description: Contains styles specific to the two player game page.
+ * This file is minimal as the two-player layout is mostly
+ * handled by the default column flex direction in common.css.
+ */
 
 /* Two player container uses default column layout from common.css */
 /* #two-player-container { flex-direction: column; align-items: center; } */
 
-/* No specific layout overrides needed here beyond common.css,
-   as two-player is a simple centered column.
-   Styles for score-area, canvas, controls, instructions are in common.css
+/* No specific layout overrides are typically needed here beyond what's provided in common.css,
+   as the two-player layout is a simple centered column stack of game elements.
+   Styles for elements like #score-area, #game-canvas, #controls, #instructions are defined in common.css.
 */
 
 /* Responsive adjustments */
 @media (max-width: 860px) {
-    /* Two player layout is already column on small screens due to common.css */
+    /* The two player layout is already a column stack on small screens due to common.css base style,
+       so no specific override is typically needed here unless adjustments to element spacing or sizing are required. */
 }

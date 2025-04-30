@@ -1,83 +1,142 @@
-﻿/* File: singleplayer.css */
+﻿/*
+ * File: singleplayer.css
+ * Description: Contains styles specific to the single player game page,
+ * primarily controlling the layout of the game area relative to the leaderboard
+ * and the internal styling of leaderboard entries.
+ */
 
 /* --- Single Player Layout --- */
-/* Styles specific to the single player container on large screens */
+/* Styles specific to the single player container layout on large screens */
 @media (min-width: 860px) {
+    /* Styling for the game area when layout is horizontal */
     #single-player-container #game-area {
-        flex: 2;
-        padding-right: 20px;
-        border-right: 1px solid #eee;
+        flex: 2; /* Game area takes 2 parts of the available space */
+        padding-right: 20px; /* Space between game area and leaderboard */
+        border-right: 1px solid #eee; /* Separator line between game area and leaderboard */
     }
 
+    /* Styling for the leaderboard area when layout is horizontal */
     #leaderboard-area {
-        flex: 1;
-        padding-left: 20px;
+        flex: 1; /* Leaderboard area takes 1 part of the available space */
+        padding-left: 20px; /* Space between leaderboard and game area */
     }
 }
 
 
-/* Responsive adjustments for single player on small screens */
+/* Responsive adjustments for single player layout on screens up to 860px wide */
 @media (max-width: 860px) {
+    /* Game area styling when stacked vertically */
     #game-area {
-        padding-right: 0;
-        border-right: none;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #eee;
-        width: 100%;
-        box-sizing: border-box;
-        text-align: center;
+        padding-right: 0; /* Remove right padding */
+        border-right: none; /* Remove right border */
+        padding-bottom: 20px; /* Add padding below game area */
+        border-bottom: 1px solid #eee; /* Add border below game area */
+        width: 100%; /* Game area takes full width */
+        box-sizing: border-box; /* Include padding/border in width */
+        text-align: center; /* Center content within game area */
     }
 
+    /* Leaderboard area styling when stacked vertically */
     #leaderboard-area {
-        padding-left: 0;
-        padding-top: 20px;
-        text-align: center;
-        width: 100%;
-        box-sizing: border-box;
+        padding-left: 0; /* Remove left padding */
+        padding-top: 20px; /* Add padding above leaderboard area */
+        text-align: center; /* Center content within leaderboard area (like title) */
+        width: 100%; /* Leaderboard area takes full width */
+        box-sizing: border-box; /* Include padding/border in width */
     }
 
+    /* Ensure main blocks within game-area are centered on small screens */
     #player-info,
     #game-area h1,
     #game-area #score-area,
     #game-area #instructions {
-        text-align: center;
-        width: 100%;
+        text-align: center; /* Center text within these blocks */
+        width: 100%; /* Ensure these blocks use full width */
+    }
+
+    /* --- Leaderboard Entry Layout on Small Screens (Default Flow) --- */
+    /* Base li text-align: left from common.css applies */
+    #leaderboard-list li {
+        display: block; /* Ensure li are blocks (default) */
+        /* Inherits base styles from common.css */
+    }
+
+    /* Styles for spans within the score-time div on small screens */
+    /* These override the flexbox display for the container below when on small screens */
+    .leaderboard-entry-score-time .score,
+    .leaderboard-entry-score-time .time {
+        display: inline; /* Ensure these spans flow inline like text */
+        margin-right: 5px; /* Add a small space between score and time */
+    }
+
+    .leaderboard-entry-score-time .time {
+        margin-right: 0; /* No margin after the last item */
     }
 }
 
 /* --- Leaderboard Specific Styles (#leaderboard-area and its content) --- */
 /* Base styles for #leaderboard-list h2, #leaderboard-list, #leaderboard-list li are in common.css */
 
+/* Default text alignment for the leaderboard area content */
 #leaderboard-area {
-    text-align: left; /* Default left alignment for the whole block */
+    text-align: left; /* Align text content left within the leaderboard area */
 }
 
+/* Styles for individual leaderboard list items (li) */
 #leaderboard-list li {
-    /* text-align: left; from common.css applies to content within li */
+    /* Styles defined in common.css (margin, padding, border, text-align etc.) */
 }
 
+/* --- Styles for the 2-line leaderboard entry structure --- */
+/* This structure is used inside each li element */
+
+/* Styling for the username line (first line) */
 .leaderboard-entry-username {
-    font-weight: bold; /* Make username bold */
-    text-align: left; /* Ensure username is left-aligned */
-    /* display: block; /* divs are block by default, but explicitly stating can be good */
-    margin-bottom: 5px; /* Space between username and the score/time line */
+    font-weight: bold; /* Make username text bold */
+    text-align: left; /* Ensure username text is left-aligned */
+    display: block; /* Ensure this div takes up its own line */
+    margin-bottom: 5px; /* Space between the username line and the score/time line below */
 }
 
+/* Styling for the score/time line (second line) */
 .leaderboard-entry-score-time {
-    display: flex; /* Use flexbox for the score/time line */
-    justify-content: space-between; /* Push score left, time right */
-    align-items: center; /* Vertically center score and time */
-    /* display: block; /* divs are block by default */
-    width: 100%; /* Ensure this flex container fills the list item width */
+    display: flex; /* Use flexbox for this line to arrange score and time */
+    justify-content: space-between; /* Distribute space to push score to the left and time to the right */
+    align-items: center; /* Vertically center score and time if they had different heights */
+    width: 100%; /* Ensure this flex container fills the width of its parent list item */
 }
 
+    /* Styling for the score span */
     .leaderboard-entry-score-time .score {
-        /* text-align: left; /* Flexbox handles alignment */
-        /* No specific margin needed here usually */
+        /* No specific alignment needed here as parent flexbox handles it */
+        /* Add margin/padding here if needed */
     }
 
+    /* Styling for the time span */
     .leaderboard-entry-score-time .time {
-        white-space: nowrap; /* Prevent time from wrapping */
-        /* text-align: right;  Flexbox handles alignment */
-        /* No specific margin needed here usually */
+        white-space: nowrap; /* Prevent the time text from wrapping to the next line */
+        /* No specific alignment needed here as parent flexbox handles it */
+        /* Add margin/padding here if needed */
     }
+
+
+/* --- Leaderboard Entry Layout Overrides for Small Screens (Revert Flexbox) --- */
+@media (max-width: 860px) {
+    /* On small screens, revert the score/time line container to a block */
+    .leaderboard-entry-score-time {
+        display: block;
+        /* Flexbox properties are implicitly removed when display is changed from flex */
+    }
+
+        /* Styles for spans within the score-time div on small screens */
+        /* These make the score and time flow inline like regular text */
+        .leaderboard-entry-score-time .score,
+        .leaderboard-entry-score-time .time {
+            display: inline; /* Ensure these spans flow inline */
+            margin-right: 5px; /* Add a small space between score and time when inline */
+        }
+
+        .leaderboard-entry-score-time .time {
+            margin-right: 0; /* Remove the margin after the last item */
+        }
+}

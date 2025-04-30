@@ -3,49 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>单人贪吃蛇</title>
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/singleplayer.css">
+    <title>基于HTML5的贪吃蛇小游戏 - 单人模式</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/singleplayer.css">
 </head>
 <body>
     <div id="single-player-container" class="game-layout-container">
         <div id="game-area">
-            <h1>单人贪吃蛇</h1>
-
-            <div id="player-info">
+            <h1>基于HTML5的贪吃蛇小游戏</h1> <div id="player-info">
                 <span>当前用户: <span id="current-username-display">玩家</span></span>
             </div>
 
             <div id="score-area">
-                <span>当前得分: <span id="p1-current-score">0</span></span>
-                <span style="margin-left: 20px;">历史最高分: <span id="high-score">0</span></span>
-                <span style="margin-left: 20px;">游戏时长: <span id="current-survival-time">0</span>s</span>
+                <span>当前得分: <span id="p1-current-score">0</span></span> <span style="margin-left: 20px;">历史最高分: <span id="high-score">0</span></span> <span style="margin-left: 20px;">游戏时长: <span id="current-survival-time">0</span>s</span>
             </div>
 
             <canvas id="game-canvas" width="600" height="400"></canvas>
 
             <div id="controls">
-                <button id="start-button">开始游戏</button>
-                <p id="message-area"></p>
-                <div id="game-result-area"></div>
+                <button id="start-button">开始游戏</button> <p id="message-area"></p> <div id="game-result-area"></div>
             </div>
 
             <div id="instructions">
                 <p>按 **空格键** 开始游戏。</p>
                 <p>操作：使用方向键 (↑ ↓ ← →) 或 WASD 控制蛇移动。</p>
                 <p>规则：吃到食物得分并变长，撞到墙壁或自己身体则游戏结束。</p>
+                <p>难度影响游戏速度。</p>
                 <p><a href="/">返回模式选择</a></p>
             </div>
         </div>
 
         <div id="leaderboard-area">
-            <h2>排行榜</h2>
-            <ul id="leaderboard-list">
+            <h2>排行榜</h2> <ul id="leaderboard-list">
             </ul>
         </div>
     </div>
 
-    <script src="js/common.js" defer></script>
-    <script src="js/singleplayer.js" defer></script>
+    <script src="/js/common.js" defer></script>
+    <script src="/js/singleplayer.js" defer></script>
 </body>
 </html>

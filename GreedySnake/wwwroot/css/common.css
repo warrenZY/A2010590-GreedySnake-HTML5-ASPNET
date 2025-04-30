@@ -1,246 +1,331 @@
-﻿/* File: common.css */
+﻿/*
+ * File: common.css
+ * Description: Contains styles common to multiple pages or elements across the application,
+ * such as base body styles, container styles, shared component styles,
+ * and responsive adjustments applicable to multiple layouts.
+ */
+
+/* Base styles for the entire body, centering content vertically and horizontally */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center content horizontally in the flex container */
+    align-items: center; /* Center content vertically in the flex container */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    background-color: #f0f0f0; /* Light grey background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Preferred font stack */
+    margin: 0; /* Remove default body margin */
+    padding: 20px; /* Add padding around the content */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
 }
 
-/* Container for the mode selection page */
+/* Container for the mode selection page content */
 #mode-select-container {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ccc;
-    text-align: center;
-    max-width: 500px;
-    width: 95%;
+    background-color: #fff; /* White background */
+    padding: 40px; /* Inner padding */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    border: 1px solid #ccc; /* Light grey border */
+    text-align: center; /* Center text content within the container */
+    max-width: 500px; /* Maximum width for the container */
+    width: 95%; /* Ensure it's responsive on smaller screens */
 }
 
+/* Section for username setup */
 #username-setup {
-    margin-bottom: 20px;
-    font-size: 1.1em;
-    color: #555;
-    text-align: left;
-    padding-bottom: 15px;
-    border-bottom: 1px dashed #eee;
+    margin-bottom: 20px; /* Space below this section */
+    font-size: 1.1em; /* Slightly larger font size */
+    color: #555; /* Dark grey text color */
+    text-align: left; /* Align text left within this section */
+    padding-bottom: 15px; /* Padding below content */
+    border-bottom: 1px dashed #eee; /* Dashed separator line below */
 }
 
+    /* Align inline elements within username setup vertically */
     #username-setup label,
     #username-setup input,
     #username-setup button,
     #username-setup span {
-        vertical-align: middle;
+        vertical-align: middle; /* Align elements to the middle baseline */
     }
 
+/* Styling for the username input field */
 #username-input {
-    padding: 5px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
+    padding: 5px; /* Inner padding */
+    margin-right: 5px; /* Space to the right */
+    border: 1px solid #ccc; /* Border style */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1em; /* Standard font size */
 }
 
+/* Styling for the save username button */
 #save-username-button {
-    padding: 5px 10px;
-    font-size: 0.9em;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 5px 10px; /* Inner padding */
+    font-size: 0.9em; /* Slightly smaller font size */
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Hand cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
+    /* Hover effect for the save username button */
     #save-username-button:hover {
-        background-color: #0056b3;
+        background-color: #0056b3; /* Darker blue on hover */
     }
 
+/* Styling for the displayed current username */
 #current-username-display {
-    font-weight: bold;
-    color: #333;
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark text color */
 }
 
-
+/* Section for game mode selection */
 #mode-options {
-    margin: 20px 0;
-    font-size: 1.2em;
-    text-align: left;
+    margin: 20px 0; /* Top and bottom margin */
+    font-size: 1.2em; /* Larger font size */
+    text-align: left; /* Align text left within this section */
 }
 
+    /* Margin below each mode radio button line */
     #mode-options div {
-        margin-bottom: 10px;
+        margin-bottom: 10px; /* Space below each div containing a radio button and label */
     }
 
+    /* Margin for radio button input */
     #mode-options input[type="radio"] {
-        margin-right: 5px;
+        margin-right: 5px; /* Space to the right of the radio button */
     }
 
+/* Styling for the main "Enter Game" button */
 #enter-game-button {
-    padding: 12px 25px;
-    font-size: 1.1em;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 12px 25px; /* Inner padding */
+    font-size: 1.1em; /* Slightly larger font size */
+    background-color: #28a745; /* Green background */
+    color: white; /* White text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Hand cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    margin-top: 20px; /* Space above the button */
 }
 
+    /* Hover effect for the main button */
     #enter-game-button:hover {
-        background-color: #218838;
+        background-color: #218838; /* Darker green on hover */
     }
 
+    /* Styling for disabled button state */
+    #enter-game-button:disabled {
+        background-color: #cccccc; /* Grey background when disabled */
+        cursor: not-allowed; /* Not-allowed cursor when disabled */
+    }
+
+/* Area for displaying messages on the mode selection page */
 #mode-message-area {
-    margin-top: 15px;
-    color: #dc3545;
-    min-height: 1.2em;
+    margin-top: 15px; /* Space above the message */
+    color: #dc3545; /* Red text color for errors/messages */
+    min-height: 1.2em; /* Ensure minimum height even if empty */
 }
 
 
-/* Common styles for game pages */
+/* Common styles for game pages (#single-player-container, #two-player-container) */
 .game-layout-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ccc;
-    text-align: center;
-    width: 100%;
-    max-width: 1000px;
-    display: flex;
-    flex-direction: column; /* Default stack vertically for mobile-first or as base */
-    align-items: center; /* Center items in column */
+    background-color: #fff; /* White background */
+    padding: 20px; /* Inner padding */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    border: 1px solid #ccc; /* Light grey border */
+    text-align: center; /* Center text content within the container */
+    width: 100%; /* Full width within its parent */
+    max-width: 1000px; /* Maximum width */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Default stack children vertically */
+    align-items: center; /* Center items horizontally in the column */
 }
 
+/* Styling for page titles (h1) on game pages */
 h1 {
-    margin-top: 0;
-    color: #333;
-    text-align: center;
+    margin-top: 0; /* Remove default top margin */
+    color: #333; /* Dark text color */
+    text-align: center; /* Center the title text */
 }
 
+/* Area for displaying player scores and time */
 #score-area {
-    margin-bottom: 15px;
-    font-size: 1.1em;
-    color: #555;
-    text-align: center;
-    width: 100%;
+    margin-bottom: 15px; /* Space below score area */
+    font-size: 1.1em; /* Slightly larger font size */
+    color: #555; /* Dark grey text color */
+    text-align: center; /* Center text within score area */
+    width: 100%; /* Full width */
 }
 
+    /* Styling for spans within the score area (each score/time item) */
     #score-area span {
-        display: inline-block;
-        margin: 0 10px;
+        display: inline-block; /* Allow side-by-side display but enable margin/padding */
+        margin: 0 10px; /* Horizontal margin between score/time items */
     }
 
 
+/* Styling for the game canvas */
 #game-canvas {
-    display: block;
-    margin: 0 auto;
-    background-color: #e0e0e0;
-    border: 1px solid #bbb;
+    display: block; /* Make it a block element */
+    margin: 0 auto; /* Center the canvas horizontally */
+    background-color: #e0e0e0; /* Light grey background */
+    border: 1px solid #bbb; /* Light border */
 }
 
+/* Container for game controls (start button, messages) */
 #controls {
-    margin-top: 15px;
-    text-align: center;
-    width: 100%;
+    margin-top: 15px; /* Space above controls */
+    text-align: center; /* Center content within controls */
+    width: 100%; /* Full width */
 }
 
+    /* Styling for buttons within the controls area (like Start button) */
     #controls button {
-        padding: 10px 20px;
-        font-size: 1em;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 10px 20px; /* Inner padding */
+        font-size: 1em; /* Standard font size */
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        border: none; /* No border */
+        border-radius: 4px; /* Rounded corners */
+        cursor: pointer; /* Hand cursor */
+        transition: background-color 0.3s ease; /* Hover transition */
     }
 
+        /* Hover effect for controls buttons */
         #controls button:hover {
-            background-color: #45a049;
+            background-color: #45a049; /* Darker green on hover */
         }
 
+        /* Disabled state for controls buttons */
         #controls button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
+            background-color: #cccccc; /* Grey background */
+            cursor: not-allowed; /* Not-allowed cursor */
         }
 
+/* Area for displaying game messages (e.g., game over, errors) */
 #message-area {
-    margin-top: 10px;
-    min-height: 1.2em;
-    font-weight: bold;
-    color: #d9534f;
+    margin-top: 10px; /* Space above message */
+    min-height: 1.2em; /* Minimum height */
+    font-weight: bold; /* Bold text */
+    color: #d9534f; /* Red text */
 }
 
+/* Area for displaying game results */
 #game-result-area {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #333;
-    white-space: pre-wrap;
-    text-align: center;
+    margin-top: 10px; /* Space above results */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark text */
+    white-space: pre-wrap; /* Preserve whitespace and wrap text */
+    text-align: center; /* Center result text */
 }
 
+/* Section for game instructions */
 #instructions {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #666;
-    text-align: center;
-    width: 100%;
+    margin-top: 20px; /* Space above instructions */
+    font-size: 0.9em; /* Smaller font size */
+    color: #666; /* Grey text */
+    text-align: center; /* Center instructions text */
+    width: 100%; /* Full width */
 }
 
+    /* Styling for links within instructions */
     #instructions a {
-        color: #007bff;
-        text-decoration: none;
+        color: #007bff; /* Blue link color */
+        text-decoration: none; /* No underline by default */
     }
 
+        /* Hover effect for links within instructions */
         #instructions a:hover {
-            text-decoration: underline;
+            text-decoration: underline; /* Underline on hover */
         }
 
 
-/* --- Common Leaderboard List Container Reset (Apply to #leaderboard-list) --- */
+/* --- Common Leaderboard List Container Reset --- */
+/* Base reset for the ul element of the leaderboard list */
 #leaderboard-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none; /* Remove default list bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
 }
 
+    /* Styling for individual leaderboard list items */
     #leaderboard-list li {
-        margin-bottom: 8px;
-        padding-bottom: 5px;
-        border-bottom: 1px dashed #eee;
-        font-size: 0.95em;
-        color: #333;
-        word-break: break-word;
-        text-align: left; /* Ensure list item text aligns left */
+        margin-bottom: 8px; /* Space below each list item */
+        padding-bottom: 5px; /* Padding below content within the item */
+        border-bottom: 1px dashed #eee; /* Dashed separator below each item */
+        font-size: 0.95em; /* Slightly smaller font size */
+        color: #333; /* Dark text color */
+        word-break: break-word; /* Allow long words to break and wrap */
+        text-align: left; /* Align text left within the list item */
     }
 
+        /* Remove bottom border for the last list item */
         #leaderboard-list li:last-child {
             border-bottom: none;
         }
 
 
-/* Responsive adjustments */
+/* --- Common Styles for Mode Options Sections (Single and Two Player) --- */
+/* These sections contain mode-specific settings like difficulty */
+.game-mode-options-section {
+    margin-top: 20px; /* Space above the section */
+    padding-top: 15px; /* Padding inside the top border */
+    border-top: 1px dashed #eee; /* Dashed separator above the section */
+    text-align: left; /* Align content left within the section */
+    min-height: 90px; /* Minimum height to stabilize layout when content height varies */
+}
+
+    /* Add margin below the last element inside the mode options sections (e.g., difficulty div or paragraph) */
+    .game-mode-options-section > :last-child {
+        margin-bottom: 15px; /* Space below the last content element before the button */
+    }
+
+    /* Styling for the title inside mode options sections (h3) */
+    .game-mode-options-section h3 {
+        margin-top: 0; /* Remove default top margin */
+        color: #555; /* Dark grey color */
+        font-size: 1.1em; /* Slightly larger font size */
+        margin-bottom: 10px; /* Space below the title */
+        text-align: center; /* Center the title text */
+    }
+
+/* Styling for labels within difficulty options (radio buttons and their text) */
+.difficulty-options label {
+    margin-right: 15px; /* Space between radio button labels */
+}
+
+
+/* Responsive adjustments for screens up to 860px wide */
 @media (max-width: 860px) {
-    /* Default game-layout-container is already column on small screens */
+    /* Game layout containers already default to column on small screens as per base styles */
+
+    /* Adjust margin for score area spans on small screens */
     #score-area span {
-        display: inline-block;
-        margin: 5px 10px;
+        display: inline-block; /* Keep inline-block for score/time items */
+        margin: 5px 10px; /* Adjust vertical and horizontal margin */
+    }
+
+    /* Ensure the margin below the last child of game mode options section applies on small screens */
+    .game-mode-options-section > :last-child {
+        margin-bottom: 15px;
+    }
+
+    /* Ensure difficulty labels have horizontal margin on small screens too */
+    .difficulty-options label {
+        margin-right: 15px;
     }
 }
 
-/* Medium to large screens: Switch to row layout ONLY FOR SINGLE PLAYER */
+/* Responsive adjustments for screens wider than 860px */
 @media (min-width: 860px) {
-    /*Target only single player container --- */
+    /* For single player container, switch from column to row layout */
     #single-player-container.game-layout-container {
-        flex-direction: row; /* Side-by-side layout */
-        align-items: flex-start; /* Align items to the top */
+        flex-direction: row; /* Arrange children (game area, leaderboard) horizontally */
+        align-items: flex-start; /* Align children to the top of the container */
     }
+    /* Two player container (#two-player-container) will NOT be targeted by this rule,
+       so it remains flex-direction: column from the base .game-layout-container rule. */
 }
