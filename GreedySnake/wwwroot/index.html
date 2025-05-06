@@ -126,10 +126,10 @@
                 } else if (selectedMode === 'twoplayer') {
                     singlePlayerOptionsDiv.style.display = 'none'; // Hide single player options
                     twoPlayerOptionsDiv.style.display = 'block'; // Show two player options
-                    // Ensure the default two player difficulty ('super_easy') is checked when this section is shown
+                    // Ensure the default two player difficulty ('easy') is checked when this section is shown
                     // --- Use twoPlayerDifficultyOptions NodeList ---
                     for (const option of twoPlayerDifficultyOptions) {
-                        if (option.value === 'easy') { // Check if this is the super_easy option
+                        if (option.value === 'easy') { // Check if this is the easy option
                             option.checked = true; // Set this radio button as checked
                         } else {
                             option.checked = false; // Ensure other two player difficulty options are unchecked
