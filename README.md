@@ -244,7 +244,7 @@ The controller acts as the interface between HTTP requests from the frontend and
 
     ```csharp
     [HttpGet]
-    public ActionResult<List<LeaderboardEntry>> Get([FromQuery] int limit = 10) // limit from query string, default 10
+    public ActionResult<List<LeaderboardEntry>> Get([FromQuery] int limit = 50) // limit from query string, default 50
     {
         try
         {
@@ -270,7 +270,7 @@ The controller acts as the interface between HTTP requests from the frontend and
         or just
         ```http
         GET /api/leaderboard HTTP/1.1
-        Host: localhost:5155 # Default limit (10) will be used
+        Host: localhost:5155 # Default limit (50) will be used
         ```
     * **Sample Response (200 OK):**
         ```json

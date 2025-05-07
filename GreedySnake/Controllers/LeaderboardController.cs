@@ -18,7 +18,7 @@ namespace SnakeGame.Controllers
         // GET: api/leaderboard
         // Returns the sorted list of leaderboard entries
         [HttpGet]
-        public ActionResult<List<LeaderboardEntry>> Get([FromQuery] int limit = 10) // Optional: allow limiting entries via query param
+        public ActionResult<List<LeaderboardEntry>> Get([FromQuery] int limit = 50) // Optional: allow limiting entries via query param
         {
             try
             {
